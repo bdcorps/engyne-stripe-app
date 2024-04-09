@@ -1,20 +1,43 @@
 {
-    "id": "com.engyne.engyne",
-    "version": "0.0.1",
-    "name": "Engyne",
-    "icon": "",
-    "permissions": [],
-    "ui_extension": {
-        "views": [
-            {
-                "viewport": "stripe.dashboard.customer.detail",
-                "component": "App"
-            }
-        ],
-        "content_security_policy": {
-            "connect-src": null,
-            "image-src": null,
-            "purpose": ""
-        }
+  "id": "com.engyne.engyneapp",
+  "version": "0.0.8",
+  "name": "Engyne",
+  "icon": "./src/views/engyne_320.png",
+  "permissions": [
+    {
+      "permission": "charge_read",
+      "purpose": "Lets Engyne read your Stripe charges"
+    },
+    {
+      "permission": "customer_read",
+      "purpose": "Lets Engyne read your Stripe customers"
+    },
+    {
+      "permission": "user_email_read",
+      "purpose": "Lets Engyne read your Stripe user email"
+    },
+    {
+      "permission": "connected_account_read",
+      "purpose": "Lets Engyne read your Stripe connected account"
     }
+  ],
+  "app_backend": {
+    "webhooks": null
+  },
+  "ui_extension": {
+    "views": [
+      {
+        "viewport": "settings",
+        "component": "AppSettings"
+      }
+    ]
+  },
+  "post_install_action": {
+    "type": "external",
+    "url": "https://app.engyne.ai/onboarding"
+  },
+  "allowed_redirect_uris": [
+    "https://app.engyne.ai/onboarding"
+  ],
+  "distribution_type": "public"
 }
