@@ -3,6 +3,11 @@ export const CONFIG = {
   IMPERSONATE_USER: "",
 }
 
+// export const CONFIG = {
+//   BACKEND_URL: "http://localhost:7001",
+//   IMPERSONATE_USER: "",
+// }
+
 export const getAccountId = (stripeUserId: string) => {
   return CONFIG.IMPERSONATE_USER ? CONFIG.IMPERSONATE_USER : stripeUserId
 }

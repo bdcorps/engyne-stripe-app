@@ -30,7 +30,14 @@
         "viewport": "settings",
         "component": "AppSettings"
       }
-    ]
+    ],
+    "content_security_policy": {
+      "connect-src": [
+        "https://app.engyne.ai/api/"
+      ],
+      "image-src": null,
+      "purpose": ""
+    }
   },
   "post_install_action": {
     "type": "external",
