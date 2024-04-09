@@ -2,7 +2,7 @@ import type { ExtensionContextValue } from '@stripe/ui-extension-sdk/context'
 import { Box, Button, Icon, Inline, Link, SettingsView, Spinner } from '@stripe/ui-extension-sdk/ui'
 import { getAccountId } from '../../config'
 import Layout from '../components/Layout'
-import { useSite } from '../hooks/api'
+import { useSite, useUpdateSite } from '../hooks/api'
 
 const AppSettings = (props: ExtensionContextValue) => {
   const { userContext, environment } = props
@@ -10,7 +10,8 @@ const AppSettings = (props: ExtensionContextValue) => {
   const stripeAccountId = getAccountId(userContext?.account?.id)
 
   const { data: site, isLoading: isSiteLoading } = useSite(stripeAccountId)
-  console.log({ site })
+  const { mutate: updateSiteMutation, isLoading: isUpdateSiteLoading } =
+    useUpdateSite();
 
   if (isSiteLoading) {
     return <Spinner size="small" />
@@ -39,7 +40,9 @@ const AppSettings = (props: ExtensionContextValue) => {
 
         </Box>
         <Box css={{ layout: 'row', gap: 'small', alignX: "start" }}>
-          <Button type="destructive" size="small">Disconnect</Button>
+          {isUpdateSiteLoading ? <Spinner size="small" /> : <Button type="destructive" size="small" onPress={() => {
+            updateSiteMutation({ subdomain: site.subdomain, data: { stripeAcctId: null } })
+          }}>Disconnect</Button>}
         </Box>
       </Box>
     } else {
@@ -47,7 +50,7 @@ const AppSettings = (props: ExtensionContextValue) => {
         <Inline css={{ fontWeight: "semibold", font: "heading" }}>Account not connected</Inline>
         <Inline>In order to use this app, you need to connect your Stripe account with Engyne</Inline>
 
-        <Link href="https://app.engyne.ai/onboarding" external>Connect to Engyne</Link>
+        <Link href="https://app.engyne.ai/login" external>Connect to Engyne</Link>
       </Box>
     }
   }
