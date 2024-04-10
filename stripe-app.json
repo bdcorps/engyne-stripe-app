@@ -1,6 +1,6 @@
 {
   "id": "com.engyne.engyneapp",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "name": "Engyne",
   "icon": "./src/views/engyne_320.png",
   "permissions": [

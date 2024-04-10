@@ -1,5 +1,7 @@
 import type { ExtensionContextValue } from '@stripe/ui-extension-sdk/context'
 import { Box, Button, Icon, Inline, Link, SettingsView, Spinner } from '@stripe/ui-extension-sdk/ui'
+import { fetchStripeSignature } from '@stripe/ui-extension-sdk/utils'
+import { useEffect, useState } from 'react'
 import { getAccountId } from '../../config'
 import Layout from '../components/Layout'
 import { useSite, useUpdateSite } from '../hooks/api'
@@ -12,6 +14,16 @@ const AppSettings = (props: ExtensionContextValue) => {
   const { data: site, isLoading: isSiteLoading } = useSite(stripeAccountId)
   const { mutate: updateSiteMutation, isLoading: isUpdateSiteLoading } =
     useUpdateSite();
+  const [signature, setSignature] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchSignature = async () => {
+      const fetchedSignature = await fetchStripeSignature();
+      setSignature(fetchedSignature);
+    };
+
+    fetchSignature();
+  }, []);
 
   if (isSiteLoading) {
     return <Spinner size="small" />
@@ -50,7 +62,7 @@ const AppSettings = (props: ExtensionContextValue) => {
         <Inline css={{ fontWeight: "semibold", font: "heading" }}>Account not connected</Inline>
         <Inline>In order to use this app, you need to connect your Stripe account with Engyne</Inline>
 
-        <Link href="https://app.engyne.ai/login" external>Connect to Engyne</Link>
+        <Link href={`https://app.engyne.ai/api/stripe-app/callback?account_id=${stripeAccountId}&user_id=${userContext?.account?.id}&install_signature=${signature}`} external>Connect to Engyne</Link>
       </Box>
     }
   }
